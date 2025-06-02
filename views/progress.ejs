@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Track Your Progress</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .category {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Track Your Progress</h1>
+
+  <div id="tracker">
+    <div class="section">
+      <h2>Crate Training</h2>
+      <label><input type="checkbox" data-key="crate_introduction"> Introduced crate positively</label>
+      <label><input type="checkbox" data-key="crate_duration"> Puppy comfortable for 30+ min alone</label>
+      <label><input type="checkbox" data-key="crate_naps"> Takes daily naps in crate</label>
+    </div>
+
+    <div class="section">
+      <h2>Potty Training</h2>
+      <label><input type="checkbox" data-key="potty_schedule"> Sticking to a regular potty schedule</label>
+      <label><input type="checkbox" data-key="potty_signals"> Puppy signals when they need to go</label>
+      <label><input type="checkbox" data-key="potty_accidents"> No accidents in 3+ days</label>
+    </div>
+
+    <div class="section">
+      <h2>Commands</h2>
+      <label><input type="checkbox" data-key="come"> Responds to “Come” indoors</label>
+      <label><input type="checkbox" data-key="place"> Holds “Place” for 30+ seconds</label>
+      <label><input type="checkbox" data-key="leave_it"> Understands “Leave it” with treat</label>
+      <label><input type="checkbox" data-key="safe"> Uses “Safe” for calming regularly</label>
+    </div>
+  </div>
+
+  <p style="text-align: center;"><a href="/">← Back to Home</a></p>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(box => {
+      const key = box.dataset.key;
+      const saved = localStorage.getItem(key);
+      if (saved === "true") box.checked = true;
+
+      box.addEventListener("change", () => {
+        localStorage.setItem(key, box.checked);
+      });
+    });
+  </script>
+</body>
+</html>

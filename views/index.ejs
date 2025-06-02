@@ -3,18 +3,47 @@
 <head>
   <title>Puppy Training Guide</title>
   <link rel="stylesheet" href="/styles.css" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#f4a261" />
-  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <style>
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 300px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    nav a {
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #333;
+    }
+
+    nav a:hover {
+      background-color: #dceffd;
+    }
+
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
   <h1>Puppy Training Guide</h1>
   <nav>
-    <a href="/crate">Crate Training</a> |
-    <a href="/potty">Potty Training</a> |
-    <a href="/commands">Basic Commands</a> |
-    <a href="/social">Socialization</a> |
+    <a href="/crate">Crate Training</a>
+    <a href="/potty">Potty Training</a>
+    <a href="/commands">Basic Commands</a>
+    <a href="/obedience">Obedience</a>
+    <a href="/social">Socialization</a>
+    <a href="/progress">Track Progress</a>
     <a href="/schedule">Daily Schedule</a>
+
 
   <script>
   if ('serviceWorker' in navigator) {
