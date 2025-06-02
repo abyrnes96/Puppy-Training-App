@@ -10,6 +10,8 @@ app.get("/crate", (req, res) => res.render("crate"));
 app.get("/potty", (req, res) => res.render("potty"));
 app.get("/commands", (req, res) => res.render("commands"));
 app.get("/social", (req, res) => res.render("social"));
+app.get("/schedule", (req, res) => res.render("schedule"));
+
 
 app.listen(port, () => {
   console.log(`App is running at http://localhost:${port}`);

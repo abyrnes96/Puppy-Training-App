@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Schedule</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .schedule-container {
+      max-width: 700px;
+      margin: auto;
+    }
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      color: #222;
+    }
+    .meal { background-color: #cce5ff; }
+    .potty { background-color: #d4edda; }
+    .rest { background-color: #f8f9fa; }
+    .play { background-color: #ffe5b4; }
+    .training { background-color: #e6ccff; }
+
+    .form-row {
+      margin-top: 20px;
+    }
+
+    input[type="time"], input[type="text"], select {
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 5px 10px;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Daily Puppy Schedule</h1>
+  <div class="schedule-container">
+    <div id="schedule-list"></div>
+
+    <div class="form-row">
+      <h3>Add or Edit Schedule Item</h3>
+      <input type="time" id="new-time" />
+      <input type="text" id="new-activity" placeholder="Activity description" />
+      <select id="new-type">
+        <option value="meal">Meal</option>
+        <option value="potty">Potty</option>
+        <option value="rest">Rest</option>
+        <option value="play">Play</option>
+        <option value="training">Training</option>
+      </select>
+      <button onclick="addItem()">Save</button>
+      <input type="hidden" id="edit-index" />
+    </div>
+  </div>
+
+  <p><a href="/">← Back to Home</a></p>
+
+  <script>
+    const STORAGE_KEY = "puppy_schedule";
+
+    const defaultSchedule = [
+      { time: "05:00", activity: "Potty break (quiet, quick)", type: "potty" },
+      { time: "05:10", activity: "Crate rest", type: "rest" },
+      { time: "06:00", activity: "2nd potty break", type: "potty" },
+      { time: "06:10", activity: "Light play, toy time, or calm engagement", type: "play" },
+      { time: "06:45", activity: "Crate with safe chew toy or Kong", type: "rest" },
+      { time: "08:10", activity: "Return home + potty break", type: "potty" },
+      { time: "08:20", activity: "Breakfast + water", type: "meal" },
+      { time: "08:40", activity: "Potty break (post-meal)", type: "potty" },
+      { time: "09:00", activity: "Nap (1–1.5 hours in crate / playpen)", type: "rest" },
+      { time: "10:30", activity: "Potty break + short training", type: "training" },
+      { time: "11:15", activity: "Lunch + water", type: "meal" },
+      { time: "11:30", activity: "Potty break (post-meal) + play", type: "potty" },
+      { time: "12:00", activity: "Nap (1–2 hours)", type: "rest" },
+      { time: "14:00", activity: "Potty break + training", type: "training" },
+      { time: "14:30", activity: "Calm downtime with chew toy", type: "rest" },
+      { time: "15:00", activity: "Nap (45 min – 1 hour)", type: "rest" },
+      { time: "16:00", activity: "Potty break + light activity / outside time", type: "play" },
+      { time: "17:00", activity: "Dinner + water", type: "meal" },
+      { time: "17:20", activity: "Potty break (post-meal)", type: "potty" },
+      { time: "17:30", activity: "Play + social/family time", type: "play" },
+      { time: "18:30", activity: "Short nap", type: "rest" },
+      { time: "19:15", activity: "Potty break + wind-down (brushing / cuddle)", type: "potty" },
+      { time: "20:30", activity: "Chew toy or crate wind-down", type: "rest" },
+      { time: "21:30", activity: "Final potty break", type: "potty" },
+      { time: "21:45", activity: "Settle in crate for the night", type: "rest" },
+      { time: "01:30", activity: "Overnight potty (if needed)", type: "potty" },
+      { time: "03:30", activity: "Overnight potty (if needed)", type: "potty" }
+    ];
+
+    let schedule = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultSchedule;
+
+    function saveSchedule() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(schedule));
+    }
+
+    function renderSchedule() {
+      const list = document.getElementById("schedule-list");
+      list.innerHTML = "";
+
+      schedule.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = `schedule-item ${item.type}`;
+        div.innerHTML = `
+          <div><strong>${item.time}</strong>: ${item.activity}</div>
+          <div>
+            <button onclick="editItem(${index})">Edit</button>
+            <button onclick="removeItem(${index})">Delete</button>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function addItem() {
+      const time = document.getElementById("new-time").value;
+      const activity = document.getElementById("new-activity").value;
+      const type = document.getElementById("new-type").value;
+      const index = document.getElementById("edit-index").value;
+
+      if (!time || !activity || !type) {
+        alert("Please complete all fields.");
+        return;
+      }
+
+      const newItem = { time, activity, type };
+
+      if (index === "") {
+        schedule.push(newItem);
+      } else {
+        schedule[parseInt(index)] = newItem;
+        document.getElementById("edit-index").value = "";
+      }
+
+      schedule.sort((a, b) => a.time.localeCompare(b.time));
+      saveSchedule();
+      renderSchedule();
+
+      document.getElementById("new-time").value = "";
+      document.getElementById("new-activity").value = "";
+    }
+
+    function editItem(index) {
+      const item = schedule[index];
+      document.getElementById("new-time").value = item.time;
+      document.getElementById("new-activity").value = item.activity;
+      document.getElementById("new-type").value = item.type;
+      document.getElementById("edit-index").value = index;
+    }
+
+    function removeItem(index) {
+      schedule.splice(index, 1);
+      saveSchedule();
+      renderSchedule();
+    }
+
+    renderSchedule();
+  </script>
+</body>
+</html>
