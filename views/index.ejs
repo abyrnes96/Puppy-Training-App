@@ -3,6 +3,9 @@
 <head>
   <title>Puppy Training Guide</title>
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#f4a261" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
 </head>
 <body>
   <h1>Puppy Training Guide</h1>
@@ -11,6 +14,13 @@
     <a href="/potty">Potty Training</a> |
     <a href="/commands">Basic Commands</a> |
     <a href="/social">Socialization</a>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log("Service Worker registered"))
+      .catch(err => console.log("Service Worker error:", err));
+  }
+</script>
   </nav>
 </body>
 </html>
