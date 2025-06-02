@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -24,5 +24,5 @@ app.get("/progress", (req, res) => res.render("progress"));
 
 
 app.listen(port, () => {
-  console.log(`App is running at http://localhost:${port}`);
+  console.log(`App is running on port ${port}`);
 });
